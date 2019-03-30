@@ -1,0 +1,74 @@
+#-------------------------------------------
+#  Docker Compose
+# @RobLandry
+# Original Repo : https://gitlab.landry.me/
+#-------------------------------------------
+
+version: '3'
+
+services:
+  lychee_db:
+    container_name: lychee_db
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - ./lychee/db_secret.env
+    expose:
+      - 3306
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - lychee
+    restart: unless-stopped
+
+  lychee:
+    image: lychee
+    container_name: lychee_laravel
+    ports:
+      - 80:80
+    volumes:
+      - ./lychee/conf:/conf
+      - ./lychee/uploads:/uploads
+    networks:
+      - lychee
+    environment:
+      #- PUID=1000
+      #- PGID=1000
+      - PHP_TZ=Asia/Shanghai
+      #- APP_NAME=Laravel
+      #- APP_ENV=local
+      #- APP_DEBUG=true
+      #- APP_URL=http://localhost
+      #- LOG_CHANNEL=stack
+      #- DB_DROP_CLEAR_TABLES_ON_ROLLBACK=false
+      #- DB_OLD_LYCHEE_PREFIX=''
+      #- BROADCAST_DRIVER=log
+      #- CACHE_DRIVER=file
+      #- SESSION_DRIVER=file
+      #- SESSION_LIFETIME=120
+      #- QUEUE_DRIVER=sync
+      #- SECURITY_HEADER_HSTS_ENABLE=false
+      #- REDIS_HOST=127.0.0.1
+      #- REDIS_PASSWORD=null
+      #- REDIS_PORT=6379
+      #- MAIL_DRIVER=smtp
+      #- MAIL_HOST=smtp.mailtrap.io
+      #- MAIL_PORT=2525
+      #- MAIL_USERNAME=null
+      #- MAIL_PASSWORD=null
+      #- MAIL_ENCRYPTION=null
+      #- PUSHER_APP_ID=''
+      #- PUSHER_APP_KEY=''
+      #- PUSHER_APP_SECRET=''
+      #- PUSHER_APP_CLUSTER=mt1
+    env_file:
+      - ./lychee/lychee_secret.env
+    restart: unless-stopped
+    depends_on:
+      - lychee_db
+
+networks:
+  lychee:
+
+volumes:
+  mysql:
