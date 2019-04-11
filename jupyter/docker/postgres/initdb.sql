@@ -15,4 +15,4 @@ CREATE TABLE adult (
   native_country TEXT,
   income_label TEXT
 );
-COPY adult FROM '/tmp/adult.data' DELIMITER ',' CSV;
+COPY adult FROM '/tmp/adult-clean.csv' DELIMITER ',' CSV;
