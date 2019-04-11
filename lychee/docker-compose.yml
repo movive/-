@@ -12,7 +12,7 @@ services:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     env_file:
-      - ./lychee/db_secret.env
+      - ./db_secret.env
     expose:
       - 3306
     volumes:
@@ -22,13 +22,13 @@ services:
     restart: unless-stopped
 
   lychee:
-    image: lychee
+    build: docker/lychee
     container_name: lychee_laravel
     ports:
       - 90:80
     volumes:
-      - ./lychee/conf:/conf
-      - ./lychee/uploads:/uploads
+      - ./conf:/conf
+      - ./uploads:/uploads
     networks:
       - lychee
     environment:
@@ -62,7 +62,7 @@ services:
       #- PUSHER_APP_SECRET=''
       #- PUSHER_APP_CLUSTER=mt1
     env_file:
-      - ./lychee/lychee_secret.env
+      - ./lychee_secret.env
     restart: unless-stopped
     depends_on:
       - lychee_db
