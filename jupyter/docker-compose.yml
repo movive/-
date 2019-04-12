@@ -25,7 +25,7 @@ services:
       - "-u"
       - "redis://this_redis:6379"
   this_monitor:
-    build: docker/jupyter
+    build: docker/jupyter/rq_monitor
     volumes:
       - .:/home/jovyan
     ports:
