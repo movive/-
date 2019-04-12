@@ -24,6 +24,26 @@ services:
       - "rqworker"
       - "-u"
       - "redis://this_redis:6379"
+  this_worker:
+    build: docker/jupyter
+    volumes:
+      - .:/home/jovyan
+    entrypoint:
+      - "tini"
+      - "--"
+      - "rqworker"
+      - "-u"
+      - "redis://this_redis:6379"
+  this_worker:
+    build: docker/jupyter
+    volumes:
+      - .:/home/jovyan
+    entrypoint:
+      - "tini"
+      - "--"
+      - "rqworker"
+      - "-u"
+      - "redis://this_redis:6379"
   this_monitor:
     build: docker/jupyter/rq_monitor
     volumes:
