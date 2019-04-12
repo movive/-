@@ -14,7 +14,7 @@ services:
     image: redis
     volumes:
       - redis_data:/data
-  this_worker:
+  this_worker1:
     build: docker/jupyter
     volumes:
       - .:/home/jovyan
@@ -24,7 +24,9 @@ services:
       - "rqworker"
       - "-u"
       - "redis://this_redis:6379"
-  this_worker:
+    depends_on:
+      - this_redis
+  this_worker2:
     build: docker/jupyter
     volumes:
       - .:/home/jovyan
@@ -34,7 +36,9 @@ services:
       - "rqworker"
       - "-u"
       - "redis://this_redis:6379"
-  this_worker:
+    depends_on:
+      - this_redis
+  this_worker3:
     build: docker/jupyter
     volumes:
       - .:/home/jovyan
@@ -44,6 +48,8 @@ services:
       - "rqworker"
       - "-u"
       - "redis://this_redis:6379"
+    depends_on:
+      - this_redis
   this_monitor:
     build: docker/jupyter/rq_monitor
     volumes:
